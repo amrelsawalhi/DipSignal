@@ -31,14 +31,12 @@ jobs:
 
       - name: Configure Git for commit
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Commit updated CSVs
-        run: |
           git config user.name "Amr Elsawalhi"
           git config user.email "your_email@example.com"
           git remote set-url origin https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/amrelsawalhi/DipSignal.git
+
+      - name: Commit updated CSVs
+        run: |
           git add data/*.csv
           git commit -m "Auto-update CSVs from daily pipeline"
           git push origin master
