@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+*.log
+.DS_Store
+*.swp
+.venv/
+*.token
+*.env
+*.service
+actions-runner/

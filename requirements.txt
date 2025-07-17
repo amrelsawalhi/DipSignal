@@ -1,0 +1,7 @@
+pandas
+pandas_ta
+requests
+fredapi
+yfinance
+beautifulsoup4
+feedparser
