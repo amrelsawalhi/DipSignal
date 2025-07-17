@@ -29,14 +29,12 @@ jobs:
         run: |
           python main_script.py
 
-      - name: Configure Git
+      - name: Push changes
         run: |
-          git config user.name "Amr Elsawalhi"
-          git config user.email "amrelsawalhi@users.noreply.github.com"
-          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/amrelsawalhi/DipSignal.git
-
-      - name: Commit and Push CSVs
-        run: |
+          git config --global user.email "you@example.com"
+          git config --global user.name "Amr Elsawalhi"
           git add data/*.csv
           git commit -m "Auto-update CSVs from daily pipeline"
-          git push origin master
+          git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/amrelsawalhi/DipSignal.git HEAD:master
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
