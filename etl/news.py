@@ -73,7 +73,7 @@ def append_unique_rows(new_data: pd.DataFrame, csv_path1: str, csv_path2: str = 
     new_unique = merged[merged["_merge"] == "left_only"].drop(columns="_merge")
 
     if new_unique.empty:
-        print("⚠️ No new rows to append.")
+        print("No new rows to append.")
         return
 
     if csv_path2 is None:
@@ -85,7 +85,7 @@ def append_unique_rows(new_data: pd.DataFrame, csv_path1: str, csv_path2: str = 
         new_unique = pd.concat([old_raw, new_unique], ignore_index=True)
 
     new_unique.to_csv(csv_path2, index=False, )
-    print(f"✅ Appended {len(new_unique)} new rows to {csv_path2}")
+    print(f" Appended {len(new_unique)} new rows to {csv_path2}")
 
 def main():
     
@@ -102,7 +102,9 @@ def main():
             if col not in df.columns:
                 df[col] = pd.NA
 
-    combined_seen = pd.concat([scored_df, raw_df], ignore_index=True)
+    dfs = [df for df in [scored_df, raw_df] if not df.empty]
+    combined_seen = pd.concat(dfs, ignore_index=True) if dfs else pd.DataFrame()
+
     subset = ["date", "title", "source", "summary", "url"]
 
     # Drop duplicates
@@ -112,9 +114,9 @@ def main():
     if not new_articles.empty:
         updated_raw = pd.concat([raw_df, new_articles], ignore_index=True)
         updated_raw.to_csv("data/raw_news.csv", index=False)
-        print(f"✅ Added {len(new_articles)} new articles to raw_news.csv")
+        print(f"Added {len(new_articles)} new articles to raw_news.csv")
     else:
-        print("⚠️ No new articles found.")
+        print(" No new articles found.")
 
 
 if __name__ == "__main__":

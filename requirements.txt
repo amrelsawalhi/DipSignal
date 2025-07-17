@@ -6,3 +6,4 @@ fredapi
 yfinance
 beautifulsoup4
 feedparser
+tabulate 

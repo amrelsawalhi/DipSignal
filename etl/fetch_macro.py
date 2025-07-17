@@ -24,7 +24,7 @@ def fetch_macro_data(start_date="2018-02-1", end_date=None):
     fred_df = pd.concat(df_list, axis=1)
 
     # Fetch DXY from Yahoo Finance
-    dxy = yf.download("DX-Y.NYB", start=start_date, end=end_date, interval="1d")["Close"]
+    dxy = yf.download("DX-Y.NYB", start=start_date, end=end_date, interval="1d", auto_adjust=False)["Close"]
     dxy.name = "dxy"
 
     # Merge and detect market closed days
