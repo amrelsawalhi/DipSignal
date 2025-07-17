@@ -1,6 +1,6 @@
 pandas
-pandas_ta
 numpy==1.26.4
+pandas_ta
 requests
 fredapi
 yfinance
