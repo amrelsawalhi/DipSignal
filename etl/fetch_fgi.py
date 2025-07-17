@@ -33,7 +33,7 @@ def main():
     if raw is not None:
         append_unique_rows(raw, 'data/fgi.csv', subset_cols=["date"])
     else:
-        print("⚠️ No FGI data available.")
+        print("No FGI data available.")
 
 if __name__ == "__main__":
     main()

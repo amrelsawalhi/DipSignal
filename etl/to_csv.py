@@ -20,4 +20,4 @@ def append_unique_rows(new_data: pd.DataFrame, csv_path1: str, csv_path2: str = 
         csv_path2 = csv_path1
 
     combined.to_csv(csv_path2, index=False)
-    print(f"✅ Updated {csv_path2} with {len(combined) - (len(existing_data) if 'existing_data' in locals() else 0)} new rows")
+    print(f"Updated {csv_path2} with {len(combined) - (len(existing_data) if 'existing_data' in locals() else 0)} new rows")
