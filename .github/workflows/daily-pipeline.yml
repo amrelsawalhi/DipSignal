@@ -18,6 +18,9 @@ jobs:
         with:
           python-version: '3.11'  # Adjust to match your local env
 
+      - name: Downgrade NumPy to pre-2.0
+        run: pip install numpy==1.26.4
+        
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
