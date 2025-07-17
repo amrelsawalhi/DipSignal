@@ -84,12 +84,38 @@ def append_unique_rows(new_data: pd.DataFrame, csv_path1: str, csv_path2: str = 
         old_raw["date"] = pd.to_datetime(old_raw["date"]).dt.date
         new_unique = pd.concat([old_raw, new_unique], ignore_index=True)
 
-    new_unique.to_csv(csv_path2, index=False)
+    new_unique.to_csv(csv_path2, index=False, )
     print(f"✅ Appended {len(new_unique)} new rows to {csv_path2}")
 
 def main():
+    
     df_news = fetch_all_news()
-    append_unique_rows(df_news, csv_path1='data/news_scored.csv', csv_path2='data/raw_news.csv', subset_cols=['date', 'title', 'source', 'summary', 'url'])
+
+    # Load both existing files
+    scored_df = pd.read_csv("data/news_scored.csv") if os.path.exists("data/news_scored.csv") else pd.DataFrame(columns=df_news.columns)
+    raw_df = pd.read_csv("data/raw_news.csv") if os.path.exists("data/raw_news.csv") else pd.DataFrame(columns=df_news.columns)
+
+    expected_cols = ["date", "source", "title", "summary", "url", "sentiment", "confidence", "rationale"]
+
+    for df in [scored_df, raw_df]:
+        for col in expected_cols:
+            if col not in df.columns:
+                df[col] = pd.NA
+
+    combined_seen = pd.concat([scored_df, raw_df], ignore_index=True)
+    subset = ["date", "title", "source", "summary", "url"]
+
+    # Drop duplicates
+    merged = pd.merge(df_news, combined_seen[subset].drop_duplicates(), on=subset, how="left", indicator=True)
+    new_articles = merged[merged["_merge"] == "left_only"].drop(columns="_merge")
+
+    if not new_articles.empty:
+        updated_raw = pd.concat([raw_df, new_articles], ignore_index=True)
+        updated_raw.to_csv("data/raw_news.csv", index=False)
+        print(f"✅ Added {len(new_articles)} new articles to raw_news.csv")
+    else:
+        print("⚠️ No new articles found.")
+
 
 if __name__ == "__main__":
     main()

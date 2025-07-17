@@ -7,19 +7,19 @@ from llama.llama_news import process_batches as llama_news_main
 
 
 if __name__ == "__main__":
-    # Fetch and process data
+    # fetch data from various sources
     fetch_binance_main()
     fetch_fgi_main()
     fetch_macro_main()
-    
-    # Fetch news
     news_main()
-    
-    # Fetch Llama news
+
+
+    # Run Llama predictions
+    llama_prediction_main() 
     llama_news_main()
     
-    # Run Llama predictions
-    llama_prediction_main()
+
+  
     
 
     print("All tasks completed successfully.")
