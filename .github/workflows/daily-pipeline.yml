@@ -38,4 +38,4 @@ jobs:
         run: |
           git add data/*.csv
           git commit -m "Auto-update CSVs from daily pipeline"
-          git push origin main
+          git push
