@@ -2,8 +2,8 @@ name: Daily Pipeline
 
 on:
   schedule:
-    - cron: '30 0 * * *'  # Every day at 00:30 UTC
-  workflow_dispatch:      # Allow manual triggering
+    - cron: '30 0 * * *'
+  workflow_dispatch:
 
 jobs:
   run-pipeline:
@@ -16,11 +16,11 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'  # Adjust to match your local env
+          python-version: '3.11'
 
       - name: Downgrade NumPy to pre-2.0
         run: pip install numpy==1.26.4
-        
+
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
@@ -29,13 +29,13 @@ jobs:
         run: |
           python main_script.py
 
-      - name: Configure Git for commit
+      - name: Configure Git
         run: |
           git config user.name "Amr Elsawalhi"
-          git config user.email "your_email@example.com"
+          git config user.email "amrelsawalhi@users.noreply.github.com"
           git remote set-url origin https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/amrelsawalhi/DipSignal.git
 
-      - name: Commit updated CSVs
+      - name: Commit and Push CSVs
         run: |
           git add data/*.csv
           git commit -m "Auto-update CSVs from daily pipeline"
