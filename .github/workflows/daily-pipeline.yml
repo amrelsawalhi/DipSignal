@@ -30,11 +30,11 @@ jobs:
           python main_script.py
 
       - name: Push changes
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config --global user.email "you@example.com"
           git config --global user.name "Amr Elsawalhi"
           git add data/*.csv
           git commit -m "Auto-update CSVs from daily pipeline"
           git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/amrelsawalhi/DipSignal.git HEAD:master
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
