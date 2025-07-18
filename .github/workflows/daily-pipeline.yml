@@ -40,6 +40,7 @@ jobs:
         run: git status
 
       - name: Commit changes if any
+        shell: bash
         run: |
           if git diff --cached --quiet; then
             echo "No changes to commit."
