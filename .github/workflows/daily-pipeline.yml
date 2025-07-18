@@ -32,13 +32,10 @@ jobs:
         run: git config --global credential.helper '!echo username=oauth2 && echo password=$GH_PAT'
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
-      - name: Push changes
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+      - name: Push CSVs to master
         run: |
-          git config --global user.email "you@example.com"
-          git config --global user.name "Amr Elsawalhi"
-          git add data/*.csv
-          git commit -m "Auto-update CSVs from daily pipeline"
-          git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/amrelsawalhi/DipSignal.git HEAD:master
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/amrelsawalhi/DipSignal.git
+          git push origin HEAD:master
 
