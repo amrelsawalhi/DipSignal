@@ -28,16 +28,25 @@ jobs:
       - name: Run main script
         run: |
           python main_script.py
-      - name: Enable Git debug
-        run: git config --global credential.helper '!echo username=oauth2 && echo password=$GH_PAT'
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
-      - name: Push CSVs to master
+      - name: Set up Git
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/amrelsawalhi/DipSignal.git
-          git push origin HEAD:master
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
 
+      - name: Stage changes
+        run: git add .
+
+      - name: Show Git status
+        run: git status
+
+      - name: Commit changes if any
+        run: |
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Auto-update CSVs from daily pipeline"
+          fi
+
+      - name: Push changes
+        if: success()  # Only push if the above steps didn't fail
+        run: git push
