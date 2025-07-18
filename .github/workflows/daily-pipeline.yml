@@ -40,13 +40,13 @@ jobs:
         run: git status
 
       - name: Commit changes if any
-        shell: bash
         run: |
-          if git diff --cached --quiet; then
-            echo "No changes to commit."
-          else
+          git diff --cached --quiet
+          if ($LASTEXITCODE -eq 0) {
+            Write-Host "No changes to commit."
+          } else {
             git commit -m "Auto-update CSVs from daily pipeline"
-          fi
+          }
 
       - name: Push changes
         if: success()  # Only push if the above steps didn't fail
