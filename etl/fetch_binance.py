@@ -2,9 +2,9 @@ import pandas as pd
 import pandas_ta as ta
 import requests
 import time
-from etl.to_csv import append_unique_rows
+from to_csv import append_unique_rows
 
-def fetch_ohlcv_binance_full(symbol="BTCUSDT", interval="1d", start_date="2017-02-01", days=4000):
+def fetch_ohlcv_binance_full(symbol="BTCUSDT", interval="1d", start_date="2018-02-01", days=4000):
     """
     Fetch up to `days` of OHLCV data by paginating Binance API (1000 data limit per request).
 
@@ -52,7 +52,7 @@ def fetch_ohlcv_binance_full(symbol="BTCUSDT", interval="1d", start_date="2017-0
     df[["open", "high", "low", "close", "volume"]] = df[["open", "high", "low", "close", "volume"]].astype(float)
     return df[["date", "open", "high", "low", "close", "volume"]]
 
-def fetch_ohlcv_binance(symbol="BTCUSDT", interval="1d", limit=250):
+def fetch_ohlcv_binance(symbol: str, interval="1d", limit=250):
     """
     Fetch OHLCV data from Binance for a given symbol, interval, and limit.
     
@@ -89,8 +89,8 @@ def fetch_ohlcv_binance(symbol="BTCUSDT", interval="1d", limit=250):
     # Process relevant columns
     df["date"] = pd.to_datetime(df["open_time"], unit="ms").dt.date
     df[["open", "high", "low", "close", "volume"]] = df[["open", "high", "low", "close", "volume"]].astype(float)
-
-    df = df[["date", "open", "high", "low", "close", "volume"]]
+    df["symbol"] = symbol
+    df = df[["date", "symbol", "open", "high", "low", "close", "volume"]]
     return df
 
 def calculate_indicators(df: pd.DataFrame) -> pd.DataFrame:
@@ -124,13 +124,30 @@ def calculate_indicators(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 def main():
-    df_raw = fetch_ohlcv_binance()
+    
+    symbol_matching = {
+        "BTCUSDT": "BTC",
+        "ETHUSDT": "ETH",
+        "BNBUSDT": "BNB",
+        "XRPUSDT": "XRP",
+        "ADAUSDT": "ADA",
+        "SOLUSDT": "SOL",
+    }
+
+    df_raw = pd.concat([
+        calculate_indicators(fetch_ohlcv_binance(symbol=symb))
+        for symb in symbol_matching.keys()
+        ], ignore_index=True)
+
+    df_raw["symbol"] = df_raw["symbol"].map(symbol_matching)
+    df_raw = df_raw.sort_values(by=["date", "symbol"]).reset_index(drop=True)
+
     if df_raw.empty:
         print("No data fetched from Binance.")
     else:
         print(f"Fetched {len(df_raw)} rows of raw data.")
-    df_indicators = calculate_indicators(df_raw)
-    append_unique_rows(df_indicators, "data/btc_technical.csv", subset_cols=["date"])
+
+    append_unique_rows(df_raw, "data/btc_technical.csv", subset_cols=["date", "symbol"])
 
 
 if __name__ == "__main__":
