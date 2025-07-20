@@ -129,7 +129,7 @@ MIT License
 
 🙌 Acknowledgments
 
-Binance API
-Fear & Greed Index from alternative.me
-US Macro data from FRED and YahooFinance
-LLaMA 3.1 by Meta via Ollama
+- Binance API
+- Fear & Greed Index from alternative.me
+- US Macro data from FRED and YahooFinance
+- LLaMA 3.1 by Meta via Ollama
