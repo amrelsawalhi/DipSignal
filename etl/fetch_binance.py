@@ -134,20 +134,16 @@ def main():
         "SOLUSDT": "SOL",
     }
 
-    df_raw = pd.concat([
-        calculate_indicators(fetch_ohlcv_binance(symbol=symb))
-        for symb in symbol_matching.keys()
-        ], ignore_index=True)
+    for sym, short in symbol_matching.items():
+        df = fetch_ohlcv_binance(symbol=sym)
+        df = calculate_indicators(df)   
 
-    df_raw["symbol"] = df_raw["symbol"].map(symbol_matching)
-    df_raw = df_raw.sort_values(by=["date", "symbol"]).reset_index(drop=True)
+        if df.empty:
+            print("No data fetched from Binance.")
+        else:
+            print(f"Fetched {len(df)} rows of {short} data.")
 
-    if df_raw.empty:
-        print("No data fetched from Binance.")
-    else:
-        print(f"Fetched {len(df_raw)} rows of raw data.")
-
-    append_unique_rows(df_raw, "data/btc_technical.csv", subset_cols=["date", "symbol"])
+        append_unique_rows(df, f"data/{short.lower()}_technical.csv", subset_cols=["date"])
 
 
 if __name__ == "__main__":
