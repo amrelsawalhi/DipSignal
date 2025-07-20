@@ -2,7 +2,7 @@ import pandas as pd
 import pandas_ta as ta
 import requests
 import time
-from to_csv import append_unique_rows
+from etl.to_csv import append_unique_rows
 
 def fetch_ohlcv_binance_full(symbol="BTCUSDT", interval="1d", start_date="2018-02-01", days=4000):
     """
