@@ -109,3 +109,4 @@ date,recommendation,confidence,rationale
 2025-11-16,Buy,0.74,"Based on the analysis of the last 30 days' metrics, I recommend buying XRP due to the following reasons"
 2025-11-17,Sell**,0.83**,"** Based on the data, XRP's price has been decreasing over the past few days, with a significant drop in the last 3-4 days. The MACD indicator is also showing a strong bearish signal, indicating that the momentum is shifting towards a sell-off. Additionally, the Fear and Greed Index has been fluctuating between Extreme Fear and Fear categories, indicating a high level of fear among investors, which often leads to selling pressure. The RSI is also below 50, indicating oversold conditions. While the SMAs are still aligned in a bullish manner, the overall trend suggests that it's time to take profits or consider selling XRP."
 2025-11-18,** Buy,** 0.75,**
+2025-11-19,** Hold,** 0.68,**
