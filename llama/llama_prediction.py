@@ -4,24 +4,7 @@ from datetime import datetime
 import os
 
 
-def append_unique_rows(new_data: pd.DataFrame, csv_path: str, subset_cols=["date"]):
-    if "date" not in new_data.columns:
-        raise ValueError("new_data must contain a 'date' column")
-
-    new_data["date"] = pd.to_datetime(new_data["date"]).dt.normalize()
-
-    if os.path.exists(csv_path):
-        existing_data = pd.read_csv(csv_path)
-        existing_data["date"] = pd.to_datetime(existing_data["date"]).dt.normalize()
-        combined = pd.concat([existing_data, new_data], ignore_index=True)
-        combined = combined.drop_duplicates(subset=subset_cols, keep="first")
-    else:
-        combined = new_data.drop_duplicates(subset=subset_cols)
-
-    combined.to_csv(csv_path, index=False)
-
-    new_rows = len(combined) - (len(existing_data) if 'existing_data' in locals() else 0)
-    print(f"✅ Updated {csv_path} with {new_rows} new row{'s' if new_rows != 1 else ''}")
+from etl.to_csv import append_unique_rows
 
 
 def make_llama_prompt(merged: pd.DataFrame, coin: str) -> str:
