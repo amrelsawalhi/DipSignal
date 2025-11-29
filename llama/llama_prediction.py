@@ -2,8 +2,6 @@ import pandas as pd
 import requests
 from datetime import datetime
 import os
-
-
 from etl.to_csv import append_unique_rows
 
 

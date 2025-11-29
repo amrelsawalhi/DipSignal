@@ -1,11 +1,12 @@
 import pandas as pd
 from fredapi import Fred
 import yfinance as yf
+import os
 from etl.to_csv import append_unique_rows
 
 
 def fetch_macro_data(start_date="2018-02-1", end_date=None):
-    FRED_API_KEY = "2cb3f8eded5f36f1beb5cc1a202f6a0b"
+    FRED_API_KEY = os.getenv("FRED_API_KEY")
     fred = Fred(api_key=FRED_API_KEY)
 
     # FRED series

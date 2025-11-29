@@ -5,6 +5,8 @@ from etl.news import main as news_main
 from llama.llama_prediction import main as llama_prediction_main
 from llama.llama_news import process_batches as llama_news_main
 import sys
+
+
 sys.stdout.reconfigure(encoding='utf-8')
 
 if __name__ == "__main__":
