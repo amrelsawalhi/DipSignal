@@ -1,5 +1,6 @@
 name: Daily Pipeline
-
+env:
+    FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
 on:
   schedule:
    - cron: '0 1 * * *'
